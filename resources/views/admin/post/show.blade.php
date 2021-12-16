@@ -10,10 +10,15 @@
         <div class="container-fluid">
             <a href="{{route('admin.post.index')}}" class="btn btn-danger waves-effect">Back</a>
             @if ($post->is_approved==false)
-                <button type="button" class="btn btn-success pull-right">
+                <button type="button" class="btn btn-success waves-effect pull-right" onclick="approvePost({{$post->id}})">
                     <i class="material-icons">done</i>
                     <span>Approve</span>
                 </button>
+                <form method="POST" action="{{route('admin.post.approve',$post->id)}}"
+                    id="approval-form" style="display: none">
+                    @csrf
+                    @method('PUT')
+                </form>
             @else
                 <button type="button" class="btn btn-success pull-right" disabled>
                     <i class="material-icons">done</i>
@@ -81,6 +86,8 @@
     <script src="{{ asset('assets/backend/plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
     <!-- TinyMCE -->
     <script src="{{ asset('assets/backend/plugins/tinymce/tinymce.js') }}"></script>
+    <script src="https://unpkg.com/sweetalert2@7.19.1/dist/sweetalert2.all.js"></script>
+    <!-- Demo Js -->
     <script>
         $(function() {
             //TinyMCE
@@ -101,5 +108,34 @@
             tinymce.suffix = ".min";
             tinyMCE.baseURL = '{{asset('assets/backend/plugins/tinymce')}}';
         });
+        function approvePost(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You want to approve this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, Approve it!'
+                }).then((result) => {
+                    if(result.value){
+                        event.preventDefault();
+                        document.getElementById('approval-form').submit();
+                        Swal.fire(
+                        'Approved!',
+                        'Post has been approved.',
+                        'success'
+                        )
+                    }else if(
+                        result.dismiss === swal.DismissReason.cancel
+                    ){
+                        swal(
+                            'Cancelled',
+                            'Post remains pending :) ',
+                            'info'
+                        )
+                    }
+            })
+        }
     </script>
 @endpush
