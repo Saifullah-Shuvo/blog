@@ -31,6 +31,8 @@ use Illuminate\Support\Facades\Route;
     Route::resource('post', App\Http\Controllers\Admin\PostController::class);
     Route::get('pending/post', [App\Http\Controllers\Admin\PostController::class,'pending'])->name('post.pending');
     Route::put('/post/{id}/approve', [App\Http\Controllers\Admin\PostController::class,'approval'])->name('post.approve');
+    Route::get('/subscriber', [App\Http\Controllers\Admin\SubscriberController::class,'index'])->name('subscriber.index');
+    Route::delete('/subscriber/{subscriber}', [App\Http\Controllers\Admin\SubscriberController::class,'destroy'])->name('subscriber.destroy');
     });
 
 
