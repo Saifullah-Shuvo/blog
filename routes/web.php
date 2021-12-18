@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
         return view('welcome');
     })->name('home');
 
+    Route::post('subscriber', [App\Http\Controllers\SubscriberController::class, 'store'])->name('subscriber.store');
     Auth::routes();
 
     //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
